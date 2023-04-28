@@ -16,4 +16,7 @@ export class AuthService {
   register(name:string, email: string, password: string){
     return this.http.post(`${this.API}/api/v1/auth/register`,{name,email,password})
   }
+  isAvailable(email: string){
+    return this.http.post(`${this.API}/api/v1/auth/is-available`,{email})
+  }
 }
