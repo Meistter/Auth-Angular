@@ -14,7 +14,7 @@ export class RegisterFormComponent {
 formUser = this.formBuilder.nonNullable.group({
   email: ['', [Validators.email, Validators.required]]
 })
-
+// AAA
   form = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required]],
     email: ['', [Validators.email, Validators.required]],
