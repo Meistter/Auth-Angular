@@ -17,6 +17,7 @@ export class AuthService {
     return this.http.post(`${this.API}/api/v1/auth/register`,{name,email,password})
   }
   isAvailable(email: string){
-    return this.http.post(`${this.API}/api/v1/auth/is-available`,{email})
+    return this.http.post<{isAvailable : boolean}>(`${this.API}/api/v1/auth/is-available`,{email})
   }
+  // Aqui estamos usando tipado para recibir ayuda al usar el metodo en otro componente
 }

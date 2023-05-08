@@ -28,6 +28,8 @@ formUser = this.formBuilder.nonNullable.group({
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   showPassword = false;
+  showData = false
+  email :string =''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,4 +55,35 @@ formUser = this.formBuilder.nonNullable.group({
       this.form.markAllAsTouched();
     }
   }
+  validateUser(){
+ if (this.formUser.valid){
+  this.statusUser = 'loading'
+  const {email} = this.formUser.getRawValue()
+  this.authService.isAvailable(email)
+  .subscribe({ 
+    next: (rsp)=>{
+    this.statusUser = 'success'
+    if (rsp.isAvailable){
+      this.showData = true
+      this.form.controls.email.setValue(email)      
+    }else{
+    console.log(rsp.isAvailable);    
+    this.router.navigate(['/login'], {
+      queryParams: { email }
+    });
+    }
+    
+    
+  },
+
+  error: (rsp)=>{
+    this.statusUser = 'failed'
+    
+  }})
+
+ }else{
+  this.formUser.markAllAsTouched
+ }
+
+}
 }
