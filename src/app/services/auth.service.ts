@@ -21,6 +21,7 @@ export class AuthService {
     return this.register(name, email, password)
     .pipe(
       switchMap(() => this.login(email, password))
+      // usamos el switchMap para llamar otro metodo asincrono dentro de otro
     )
   }
   isAvailable(email: string){
