@@ -28,4 +28,11 @@ export class AuthService {
     return this.http.post<{isAvailable : boolean}>(`${this.API}/api/v1/auth/is-available`,{email})
   }
   // Aqui estamos usando tipado para recibir ayuda al usar el metodo en otro componente
+
+  recovery(email: string){
+    return this.http.post(`${this.API}/api/v1/auth/recovery`,{email})
+  }
+  changePassword(newPassword: string, token: string){
+    return this.http.post(`${this.API}/api/v1/auth/change-password`,{token, newPassword})
+  }
 }
