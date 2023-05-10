@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '@services/user.service';
+import { User } from '@models/user.models';
 import { DataSourceUser } from './data-source';
 
 @Component({
   selector: 'app-users-table',
   templateUrl: './users-table.component.html'
 })
-export class UsersTableComponent  {
+export class UsersTableComponent implements OnInit {
 
   dataSource = new DataSourceUser();
   columns: string[] = ['id', 'avatar', 'name', 'email'];
 
-  constructor() {
+  constructor(private userService: UserService) {
     this.dataSource.init([
       {
         id: 1,
@@ -32,6 +33,13 @@ export class UsersTableComponent  {
         avatar: 'https://api.lorem.space/image/face?w=150&h=150'
       }
     ]);
+  }
+
+  ngOnInit(): void{
+    this.userService.getUsers()
+    .subscribe(users => {
+      this.dataSource.init(users)
+    })
   }
 
 }
