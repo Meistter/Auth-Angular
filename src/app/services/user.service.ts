@@ -4,6 +4,7 @@ import { environment } from '@environments/environment';
 import { TokenService } from './token.service';
 import { User } from '@models/user.models';
 import { BehaviorSubject, tap } from 'rxjs';
+import { checkToken} from '@interceptors/token.interceptor'
 @Injectable({
   providedIn: 'root'
 })
@@ -20,21 +21,15 @@ export class UserService {
   // En este endpoint donde se consultan los usuarios es necesario enviar el token junto a la peticion por temas de seguridad
   // lo que estamos haciendo es implementar el envio de token en el header para poder acceder al endpoint
   getUsers(){
-    const token = this.tokenService.getToken()
-    return this.http.get<User[]>(`${this.API}/api/v1/users`,{
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+    
+    return this.http.get<User[]>(`${this.API}/api/v1/users`, {context: checkToken()})
+    // el token ahora lo envia el interceptor
   }
 
   getProfile(){
-    const token = this.tokenService.getToken()
-    return this.http.get<User>(`${this.API}/api/v1/auth/profile`,{
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).pipe(
+    
+    return this.http.get<User>(`${this.API}/api/v1/auth/profile`, {context: checkToken()})
+    .pipe(
       tap(response => {
         this.user$.next(response)
       }) //Aqui le estamos indicando que una vez se obtenga el perfil por primera vez llene el observable del usuario para asi mantener el estado en la aplicación
