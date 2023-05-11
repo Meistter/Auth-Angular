@@ -22,4 +22,15 @@ export class UserService {
     })
   }
 
+  getProfile(){
+    const token = this.tokenService.getToken()
+    return this.http.get<User>(`${this.API}/api/v1/auth/profile`,{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+
+
+
 }
