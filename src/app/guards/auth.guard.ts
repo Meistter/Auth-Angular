@@ -14,7 +14,8 @@ export class AuthGuard implements CanActivate {
 
   canActivate()
   {
-    const isValidToken =  this.tokenService.isValidToken()
+
+    const isValidToken =  this.tokenService.isRefreshTokenValid() //ya no validamos con accesstoken si no con refresh token ya que el api nos da un refresh token q nos permite extender la sesion por esto la duracion maxima de un usuario en la web viene dada por la duracion del refresh token
     if(isValidToken){
       return true
     }else{
