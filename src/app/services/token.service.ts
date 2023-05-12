@@ -4,6 +4,10 @@ import { getCookie, setCookie, removeCookie} from 'typescript-cookie'
 // esto lo usaremos para el manejo del token en cookies
 
 import  jwt_decode, {JwtPayload} from 'jwt-decode'
+import { ResponseLogin } from '@models/auth.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '@environments/environment';
+import { tap } from 'rxjs';
 //  con esta libreria decodificaremos el token para obtener la fecha de expiracion
 
 
@@ -12,7 +16,8 @@ import  jwt_decode, {JwtPayload} from 'jwt-decode'
 })
 export class TokenService {
 
-  constructor() { }
+  constructor(private http: HttpClient, private tokenService: TokenService) { }
+  API = environment.API_URL
 
   saveToken(token: string){
     // localStorage.setItem('token', token)
@@ -82,4 +87,16 @@ export class TokenService {
       return false
     }
   }
+
+  refreshToken(refreshToken: string){
+    return this.http.post<ResponseLogin>(`${this.API}/api/v1/auth/refresh-token`,{refreshToken}) 
+    // Aqui lo que recibimos como respuesta es un accessToken nuevo con su refreshToken nuevo
+    .pipe(
+      tap(response=>{
+        this.saveToken(response.access_token)
+        this.saveRefreshToken(response.refresh_token)
+      })
+    )
+  }
+
 }
