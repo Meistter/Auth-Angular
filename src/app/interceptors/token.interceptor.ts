@@ -39,7 +39,7 @@ export class TokenInterceptor implements HttpInterceptor {
    return next.handle(request)
     
   }
-
+// añadir token
   private addToken(request: HttpRequest<unknown>, next: HttpHandler){
     const token = this.tokenService.getToken()
     if(token){
