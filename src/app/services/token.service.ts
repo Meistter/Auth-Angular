@@ -22,7 +22,7 @@ export class TokenService {
   saveToken(token: string){
     // localStorage.setItem('token', token)
     setCookie('token-trello', token, {expires: 365, path:'/'})
-                                              // tiempo de expiracion en dias y el path es para que ruta estara disponible la cookie, en este caso para todas las rutas
+                                            // tiempo de expiracion en dias y el path es para que ruta estara disponible la cookie, en este caso para todas las rutas
   }
   saveRefreshToken(token: string){
     // localStorage.setItem('token', token)
